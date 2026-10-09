@@ -1,0 +1,50 @@
+# 🔗 LinkMetrics
+
+**Encurtador de URLs com métricas e dashboard de analytics**, desenvolvido com Python, Flask e SQLite.
+
+## ✨ Funcionalidades
+
+* Encurtamento de URLs.
+* Links personalizados.
+* Redirecionamento automático.
+* Contagem de cliques.
+* Histórico de acessos com data e hora.
+* Identificação de navegador, sistema operacional e dispositivo.
+* Dashboard com indicadores e gráficos.
+* Estatísticas individuais por link.
+* Interface responsiva.
+* Página personalizada para links não encontrados.
+
+## 🛠️ Tecnologias
+
+* Python
+* Flask
+* SQLite
+* HTML5 e CSS3
+* JavaScript
+* Chart.js
+* user-agents
+
+## ▶️ Como executar
+
+1. Instale o Python.
+
+2. Instale as dependências:
+
+   `pip install -r requirements.txt`
+
+3. Execute a aplicação:
+
+   `python app.py`
+
+4. Acesse no navegador o endereço local configurado no projeto, por exemplo:
+
+   `http://127.0.0.1:8080`
+
+## 📊 Objetivo
+
+Projeto de portfólio desenvolvido para praticar desenvolvimento web com Python, integração com banco de dados, análise de métricas e construção de interfaces.
+
+## 👩‍💻 Desenvolvido para fins educacionais
+
+O LinkMetrics é um projeto de aprendizado. A identificação de dispositivos e navegadores é estimada a partir do User-Agent enviado pelo navegador.

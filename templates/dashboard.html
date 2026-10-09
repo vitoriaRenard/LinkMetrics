@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>LinkMetrics — Analytics</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, Arial, sans-serif;
+            background: #f5f7fb;
+            color: #171923;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 240px;
+            background: #111827;
+            color: white;
+            padding: 28px 18px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            padding-left: 12px;
+        }
+
+        .logo span {
+            color: #8b5cf6;
+        }
+
+        .menu-title {
+            color: #8b93a7;
+            font-size: 11px;
+            text-transform: uppercase;
+            margin: 20px 12px 10px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 13px 14px;
+            margin-bottom: 6px;
+            border-radius: 10px;
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .menu a:hover,
+        .menu .active {
+            background: #252d3d;
+            color: white;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 240px;
+            padding: 35px;
+            max-width: 1500px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .header p {
+            color: #737b8c;
+            margin-top: 7px;
+        }
+
+        .dashboard-btn {
+            background: #7c3aed;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        /* CARDS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 23px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, .06);
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            color: #7b8495;
+            font-size: 14px;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 14px;
+        }
+
+        .stat-icon {
+            font-size: 20px;
+        }
+
+        /* GRID */
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, .06);
+        }
+
+        .panel h2 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .chart-container {
+            height: 300px;
+        }
+
+        /* ANALYTICS */
+
+        .analytics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .analytics-item {
+            margin: 16px 0;
+        }
+
+        .analytics-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        .bar {
+            height: 7px;
+            background: #edf0f5;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                #7c3aed,
+                #a78bfa
+            );
+            border-radius: 10px;
+        }
+
+        /* TABLE */
+
+        .table-panel {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, .06);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            color: #7b8495;
+            font-size: 13px;
+            text-align: left;
+            padding: 14px;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        td {
+            padding: 15px 14px;
+            border-bottom: 1px solid #f0f1f4;
+            font-size: 14px;
+        }
+
+        .short-code {
+            color: #7c3aed;
+            font-weight: bold;
+        }
+
+        .click-badge {
+            display: inline-block;
+            background: #f1edff;
+            color: #6d28d9;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .copy-btn {
+            border: none;
+            background: #eef2ff;
+            color: #4f46e5;
+            padding: 7px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 1000px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analytics {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        🔗 Link<span>Metrics</span>
+    </div>
+
+    <div class="menu-title">
+        Principal
+    </div>
+
+    <div class="menu">
+
+        <a href="/" >
+            🏠 Início
+        </a>
+
+        <a href="/dashboard" class="active">
+            📊 Dashboard
+        </a>
+
+    </div>
+
+    <div class="menu-title">
+        Analytics
+    </div>
+
+    <div class="menu">
+
+        <a href="/dashboard">
+            📈 Desempenho
+        </a>
+
+        <a href="/dashboard">
+            👆 Cliques
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+
+    <div class="header">
+
+        <div>
+
+            <h1>
+                Dashboard
+            </h1>
+
+            <p>
+                Acompanhe o desempenho dos seus links em tempo real.
+            </p>
+
+        </div>
+
+        <a href="/" class="dashboard-btn">
+            + Criar link
+        </a>
+
+    </div>
+
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span>
+                    Links criados
+                </span>
+
+                <span class="stat-icon">
+                    🔗
+                </span>
+
+            </div>
+
+            <div class="stat-number">
+                {{ total_links }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span>
+                    Cliques totais
+                </span>
+
+                <span class="stat-icon">
+                    👆
+                </span>
+
+            </div>
+
+            <div class="stat-number">
+                {{ total_clicks }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span>
+                    Cliques hoje
+                </span>
+
+                <span class="stat-icon">
+                    📅
+                </span>
+
+            </div>
+
+            <div class="stat-number">
+                {{ clicks_today }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span>
+                    Status
+                </span>
+
+                <span class="stat-icon">
+                    🟢
+                </span>
+
+            </div>
+
+            <div class="stat-number"
+                 style="font-size: 22px;">
+
+                Ativo
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- GRAPH -->
+
+    <div class="grid">
+
+
+        <div class="panel">
+
+            <h2>
+                📈 Cliques nos últimos 7 dias
+            </h2>
+
+            <div class="chart-container">
+
+                <canvas id="graficoCliques"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h2>
+                🔗 Seus links
+            </h2>
+
+            {% for link in links[:5] %}
+
+            <div style="
+                padding: 14px 0;
+                border-bottom: 1px solid #edf0f5;
+            ">
+
+                <div class="short-code">
+                    /{{ link[0] }}
+                </div>
+
+                <div style="
+                    font-size: 12px;
+                    color: #8a92a3;
+                    margin-top: 5px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                ">
+
+                    {{ link[1] }}
+
+                </div>
+
+                <div style="
+                    margin-top: 7px;
+                    font-size: 13px;
+                ">
+
+                    👆 {{ link[2] }} cliques
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <!-- ANALYTICS -->
+
+    <div class="analytics">
+
+
+        <div class="panel">
+
+            <h2>🌐 Navegadores</h2>
+
+            {% for navegador in navegadores %}
+
+            <div class="analytics-item">
+
+                <div class="analytics-label">
+
+                    <span>
+                        {{ navegador[0] }}
+                    </span>
+
+                    <strong>
+                        {{ navegador[1] }}
+                    </strong>
+
+                </div>
+
+                <div class="bar">
+
+                    <div class="bar-fill"
+                         style="width: {{ navegador[1] * 100 / total_clicks if total_clicks else 0 }}%;">
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <div class="panel">
+
+            <h2>💻 Sistemas</h2>
+
+            {% for sistema in sistemas %}
+
+            <div class="analytics-item">
+
+                <div class="analytics-label">
+
+                    <span>
+                        {{ sistema[0] }}
+                    </span>
+
+                    <strong>
+                        {{ sistema[1] }}
+                    </strong>
+
+                </div>
+
+                <div class="bar">
+
+                    <div class="bar-fill"
+                         style="width: {{ sistema[1] * 100 / total_clicks if total_clicks else 0 }}%;">
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <div class="panel">
+
+            <h2>📱 Dispositivos</h2>
+
+            {% for dispositivo in dispositivos %}
+
+            <div class="analytics-item">
+
+                <div class="analytics-label">
+
+                    <span>
+                        {{ dispositivo[0] }}
+                    </span>
+
+                    <strong>
+                        {{ dispositivo[1] }}
+                    </strong>
+
+                </div>
+
+                <div class="bar">
+
+                    <div class="bar-fill"
+                         style="width: {{ dispositivo[1] * 100 / total_clicks if total_clicks else 0 }}%;">
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+    </div>
+
+
+    <!-- HISTORY -->
+
+    <div class="table-panel">
+
+        <h2>
+            📋 Histórico de acessos
+        </h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Data
+                    </th>
+
+                    <th>
+                        Link
+                    </th>
+
+                    <th>
+                        Navegador
+                    </th>
+
+                    <th>
+                        Sistema
+                    </th>
+
+                    <th>
+                        Dispositivo
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for clique in historico %}
+
+                <tr>
+
+                    <td>
+                        {{ clique[0] }}
+                    </td>
+
+                    <td class="short-code">
+                        /{{ clique[1] }}
+                    </td>
+
+                    <td>
+                        {{ clique[3] or "Desconhecido" }}
+                    </td>
+
+                    <td>
+                        {{ clique[4] or "Desconhecido" }}
+                    </td>
+
+                    <td>
+                        {{ clique[5] or "Desconhecido" }}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+</main>
+
+
+<script>
+
+    const dias = {{ dias | tojson }};
+
+    const cliques = {{ cliques | tojson }};
+
+    new Chart(
+        document.getElementById("graficoCliques"),
+        {
+            type: "line",
+
+            data: {
+
+                labels: dias,
+
+                datasets: [{
+
+                    label: "Cliques",
+
+                    data: cliques,
+
+                    tension: 0.35,
+
+                    fill: true
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    }
+
+                },
+
+                scales: {
+
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

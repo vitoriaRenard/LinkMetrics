@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LinkMetrics</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #171923;
+        }
+
+        .navbar {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #7c3aed;
+        }
+
+        .nav-button {
+            text-decoration: none;
+            color: white;
+            background: #7c3aed;
+            padding: 10px 16px;
+            border-radius: 9px;
+        }
+
+        .hero {
+            max-width: 850px;
+            margin: 80px auto 40px;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #eee9ff;
+            color: #6d28d9;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin: 20px 0 12px;
+        }
+
+        .highlight {
+            color: #7c3aed;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .shortener {
+            max-width: 720px;
+            margin: 35px auto;
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 10px 35px rgba(0,0,0,.08);
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #7c3aed;
+        }
+
+        .shorten-button {
+            border: none;
+            background: #7c3aed;
+            color: white;
+            padding: 0 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .result {
+            max-width: 720px;
+            margin: 25px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: left;
+            box-shadow: 0 8px 25px rgba(0,0,0,.06);
+        }
+
+        .success {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .short-link {
+            color: #7c3aed;
+            font-size: 18px;
+            margin: 12px 0 20px;
+            word-break: break-all;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action {
+            border: none;
+            padding: 11px 16px;
+            border-radius: 9px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .copy {
+            background: #111827;
+            color: white;
+        }
+
+        .stats {
+            background: #f5f3ff;
+            color: #6d28d9;
+        }
+
+        .features {
+            max-width: 900px;
+            margin: 70px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .feature {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,.05);
+        }
+
+        .feature-icon {
+            font-size: 30px;
+        }
+
+        .feature h3 {
+            margin-bottom: 8px;
+        }
+
+        .feature p {
+            color: #737b8c;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        @media (max-width: 700px) {
+
+            h1 {
+                font-size: 36px;
+            }
+
+            form {
+                flex-direction: column;
+            }
+
+            .shorten-button {
+                padding: 15px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        🔗 Link<span>Metrics</span>
+    </div>
+
+    <a href="/dashboard" class="nav-button">
+        📊 Dashboard
+    </a>
+
+</nav>
+
+
+<section class="hero">
+
+    <div class="badge">
+        ⚡ Smart URL Analytics
+    </div>
+
+    <h1>
+        Encurte links.<br>
+        <span class="highlight">Entenda seus cliques.</span>
+    </h1>
+
+    <p class="subtitle">
+        Crie links curtos e acompanhe o desempenho,
+        os acessos e o comportamento dos visitantes.
+    </p>
+
+
+    <div class="shortener">
+
+        <form method="POST">
+
+            <input
+                type="url"
+                name="url"
+                placeholder="Cole sua URL aqui..."
+                required
+            >
+             <input
+                 type="text"
+                 name="custom_code"
+                 placeholder="Apelido do link (opcional)"
+                 pattern="[A-Za-z0-9_-]+"
+                 title="Use apenas letras, números, _ ou -"
+            >
+            <button class="shorten-button" type="submit">
+                Encurtar link
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% if erro %}
+
+<div class="result">
+
+    <div style="color: #dc2626; font-weight: bold;">
+        ⚠️ {{ erro }}
+    </div>
+
+</div>
+
+{% endif %}
+{% if short_url %}
+
+<div class="result">
+
+    <div class="success">
+        ✓ Link criado com sucesso!
+    </div>
+
+    <div class="short-link" id="shortLink">
+        {{ short_url }}
+    </div>
+
+    <div class="actions">
+
+        <button
+            class="action copy"
+            onclick="copiarLink()"
+        >
+            📋 Copiar link
+        </button>
+
+        <a
+            href="/stats/{{ codigo }}"
+            class="action stats"
+        >
+            📊 Ver estatísticas
+        </a>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
+<section class="features">
+
+    <div class="feature">
+
+        <div class="feature-icon">
+            ⚡
+        </div>
+
+        <h3>
+            Rápido
+        </h3>
+
+        <p>
+            Transforme URLs longas em links curtos
+            em poucos segundos.
+        </p>
+
+    </div>
+
+
+    <div class="feature">
+
+        <div class="feature-icon">
+            📊
+        </div>
+
+        <h3>
+            Analytics
+        </h3>
+
+        <p>
+            Acompanhe cliques, navegadores,
+            sistemas e dispositivos.
+        </p>
+
+    </div>
+
+
+    <div class="feature">
+
+        <div class="feature-icon">
+            🔗
+        </div>
+
+        <h3>
+            Organizado
+        </h3>
+
+        <p>
+            Tenha seus links e métricas
+            centralizados em um só lugar.
+        </p>
+
+    </div>
+
+</section>
+
+
+<script>
+
+function copiarLink() {
+
+    const link = document.getElementById("shortLink").innerText;
+
+    navigator.clipboard.writeText(link);
+
+    const botao = document.querySelector(".copy");
+
+    botao.innerText = "✓ Copiado!";
+
+    setTimeout(() => {
+        botao.innerText = "📋 Copiar link";
+    }, 2000);
+
+}
+
+</script>
+
+</body>
+
+</html>
