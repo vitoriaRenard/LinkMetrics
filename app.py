@@ -404,14 +404,10 @@ def dashboard():
 # -------------------------
 
 if __name__ == "__main__":
-
-    criar_banco()
-
     app.run(
-        host="127.0.0.1",
-        port=8080,
-        debug=True,
-        use_reloader=False
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 8080)),
+        debug=False
     )
     
     
